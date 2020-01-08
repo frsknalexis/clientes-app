@@ -1,6 +1,9 @@
 package org.dev.app.ws.rest;
 
+import java.util.List;
+
 import org.dev.app.ws.entity.Factura;
+import org.dev.app.ws.entity.Producto;
 import org.dev.app.ws.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -33,5 +36,11 @@ public class FacturaRestController {
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	void deleteFactura(@PathVariable(value = "id") Long id) {
 		clienteService.deleteFacturaById(id);
+	}
+	
+	@GetMapping("/filtrarProductos/{termino}")
+	@ResponseStatus(code = HttpStatus.OK)
+	List<Producto> filtrarProductosByNombre(@PathVariable(value = "termino") String termino) {
+		return clienteService.findProductoByNombre(termino);
 	}
 }

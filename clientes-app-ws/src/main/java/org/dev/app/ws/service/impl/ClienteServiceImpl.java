@@ -5,9 +5,11 @@ import java.util.List;
 
 import org.dev.app.ws.entity.Cliente;
 import org.dev.app.ws.entity.Factura;
+import org.dev.app.ws.entity.Producto;
 import org.dev.app.ws.entity.Region;
 import org.dev.app.ws.repository.ClienteRepository;
 import org.dev.app.ws.repository.FacturaRepository;
+import org.dev.app.ws.repository.ProductoRepository;
 import org.dev.app.ws.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -26,6 +28,10 @@ public class ClienteServiceImpl implements ClienteService {
 	@Autowired
 	@Qualifier("facturaRepository")
 	private FacturaRepository facturaRepository;
+	
+	@Autowired
+	@Qualifier("productoRepository")
+	private ProductoRepository productoRepository;
 	
 	@Override
 	@Transactional(readOnly = true)
@@ -81,5 +87,11 @@ public class ClienteServiceImpl implements ClienteService {
 	@Transactional
 	public void deleteFacturaById(Long id) {
 		facturaRepository.deleteById(id);
+	}
+
+	@Override
+	@Transactional
+	public List<Producto> findProductoByNombre(String termino) {
+		return productoRepository.findByNombre(termino);
 	}
 }
