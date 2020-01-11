@@ -25,13 +25,15 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
 				.antMatchers(HttpMethod.GET, "/api/v1/cliente/clientes", "/api/v1/cliente/cliente/page/**",
 						"/api/v1/cliente/image/**", "/images/**")
 				.permitAll()
-				.antMatchers("/api/v1/cliente/cliente/{id}").permitAll()
-				.antMatchers("/api/v1/factura/**").permitAll()
 				.antMatchers(HttpMethod.GET, "/api/v1/cliente/cliente/{id}").hasAnyRole("USER", "ADMIN")
 				.antMatchers(HttpMethod.POST, "/api/v1/cliente/cliente/upload").hasAnyRole("USER", "ADMIN")
 				.antMatchers(HttpMethod.POST, "/api/v1/cliente/cliente").hasRole("ADMIN")
 				.antMatchers("/api/v1/cliente/cliente/**").hasRole("ADMIN")
 				.antMatchers("/api/v1/cliente/clientes/regiones").hasRole("ADMIN")
+				.antMatchers(HttpMethod.GET, "/api/v1/factura/factura/{id}").hasAnyRole("USER", "ADMIN")
+				.antMatchers(HttpMethod.DELETE, "/api/v1/factura/factura/{id}").hasRole("ADMIN")
+				.antMatchers("/api/v1/factura/filtrarProductos/{termino}").hasRole("ADMIN")
+				.antMatchers("/api/v1/factura/crearFactura").hasRole("ADMIN")
 				.anyRequest().authenticated()
 				.and().cors().configurationSource(corsConfigurationSource());
 	}
@@ -39,7 +41,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration config = new CorsConfiguration();
-		config.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+		config.setAllowedOrigins(Arrays.asList("http://localhost:4200", "*"));
 		config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 		config.setAllowCredentials(true);
 		config.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization"));
